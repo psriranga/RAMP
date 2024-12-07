@@ -24,12 +24,14 @@ from llama_index.vector_stores.pinecone import PineconeVectorStore
 from llama_index.core.schema import TextNode
 # from Embedding.embedding_generator import generate_embedding, create_embeddings
 from flask import Flask, request, jsonify
+from dotenv import load_dotenv
 
-
+load_dotenv()
 model = YOLO("yolo11n.pt")
 os.environ["IMAGEIO_FFMPEG_EXE"] = "/opt/homebrew/Cellar/ffmpeg/5.1/bin/ffmpeg"
 ssl._create_default_https_context = ssl._create_stdlib_context
 OPENAI_API_KEY = ""
+HUGGING_FACE_TOKEN = os.getenv("HUGGING_FACE_TOKEN", "")
 
 
 def create_embeddings(data):
@@ -288,7 +290,7 @@ def download_video(url, output_path):
     ys.download(output_path=output_path, filename='movie.mp4')
 
 API_URL = "https://api-inference.huggingface.co/models/openai/whisper-large-v3-turbo"
-headers = {"Authorization": "Bearer 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"}
+headers = {"Authorization": f"Bearer {HUGGING_FACE_TOKEN}"}
 
 def query(filename):
     with open(filename, "rb") as f:
