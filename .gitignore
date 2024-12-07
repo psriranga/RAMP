@@ -3,3 +3,4 @@
 *.pt
 ramp_env
 sources/*
+.env
